@@ -11,8 +11,8 @@
           href="/"
         >
           <img
-            src="~assets/buefy.png"
-            alt="Buefy"
+            src="~assets/logo.svg"
+            alt="sleepcalc"
             height="28"
           >
         </a>
