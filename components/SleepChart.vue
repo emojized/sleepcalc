@@ -14,6 +14,10 @@ export default {
         to: {
             type: Number,
             default: 0
+        },
+        toSleep: {
+            type: Number,
+            default: 0
         }
     },
 
@@ -36,13 +40,15 @@ export default {
 
             return {
                 labels: [
+                    'Falling Asleep',
                     'Sleep',
                     'Awake'
                 ],
                 datasets: [{
                     label: 'Sleepcalc',
-                    data: [sleepDuration, (24 * 60) - sleepDuration],
+                    data: [this.toSleep, sleepDuration, (24 * 60) - sleepDuration - this.toSleep],
                     backgroundColor: [
+                        '#aced5c',
                         '#ffd863'
                     ],
                     hoverOffset: 4
@@ -55,12 +61,6 @@ export default {
 
 <style scoped>
     .wrapper {
-        position: relative;
-    }
-
-    .chart {
-        position: absolute;
-        height: 500px;
-        width: 100%;
+        margin: 20px 0;
     }
 </style>
