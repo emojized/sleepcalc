@@ -41,7 +41,7 @@ export default {
 
     timeToSpleep: function () {
       let minutes = this.timeToMinutes(this.now) + this.minutesToSleep;
-      return (Math.floor(minutes / 60)) + ':' + (minutes % 60);
+      return this.minutesToTime(minutes);
     },
 
     fromMinutes: function () {
