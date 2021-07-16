@@ -10,7 +10,15 @@
           class="navbar-item"
           href="/"
         >
+<<<<<<< HEAD
           <h1 class="title is-3 has-text-white">Sleepcalc</h1>
+=======
+          <img
+            src="~assets/logo.svg"
+            alt="sleepcalc"
+            height="28"
+          >
+>>>>>>> refs/remotes/origin/main
         </a>
       </div>
     </nav>
