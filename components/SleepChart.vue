@@ -1,11 +1,13 @@
 <template>
     <div class="wrapper">
-        <chart class="chart" :chartType="type" :chartData="chartData" :chartOptions="options" />
+        <chart class="chart" :chartType="type" :chartData="chartData" :chartOptions="chartOptions" />
     </div>
 </template>
 
 <script>
+import ClockChart from './ClockChart.vue';
 export default {
+  components: { ClockChart },
     props: {
         from: {
             type: Number,
@@ -54,6 +56,23 @@ export default {
                     hoverOffset: 4
                 }]
             }
+        },
+
+        chartOptions: function () {
+            return {
+                responsive: true,
+                plugins: {
+                    legend: false,
+                },
+                rotation: this.rotation
+            }
+        },
+
+        rotation: function () {
+            let totalTime = 24 * 60;
+            let sleepStart = this.from - this.toSleep;
+            let rotationPercentage = 1 / totalTime * sleepStart;
+            return rotationPercentage * (2 * Math.PI) - 0.5 * Math.PI;
         }
     }
 }

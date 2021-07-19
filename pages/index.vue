@@ -4,7 +4,7 @@
     <time-input name="current-time" title="Current time" v-model="now"/>
     <time-input name="to-sleep" title="Time to fall asleep" v-model="toSleep"/>
     <p class="is-size-4 has-text-centered">You need to go to bed at {{ timeToSpleep }} to have {{ sleepCycles }} sleep cycles.</p>
-    <sleep-chart :toSleep="toSleepMinutes" :from="fromMinutes" :to="toMinutes" />
+    <clock-chart :currentTime="currentTime" :from="fromMinutes" :to="toMinutes" :toSleep="toSleepMinutes" />
   </section>
 </template>
 
@@ -18,6 +18,7 @@ export default {
     return {
         time: "05:00",
         now: "00:00",
+        currentTime: "00:00:00",
         toSleep: "00:30",
         minutesToSleep: null,
         sleepCycles: 0,
@@ -28,6 +29,7 @@ export default {
     setInterval(() => {
       var date = new Date();
       this.now = this.minutesToTime(date.getHours() * 60 + date.getMinutes());
+      this.currentTime = this.timeToString(date.getHours(), date.getMinutes(), date.getSeconds());
       this.minutesToSleep = this.getTimeDifference(this.startTime, this.time) % 90;
       this.sleepCycles = Math.floor(this.getTimeDifference(this.startTime, this.time) / 90);
     }, 1000)
@@ -75,11 +77,19 @@ export default {
       return hours * 60 + minutes;
     },
 
-    minutesToTime(minutes) {
+    minutesToTime(minutes, seconds) {
       let hours = (Math.floor(minutes / 60)) > 9 ? (Math.floor(minutes / 60)) : '0' + (Math.floor(minutes / 60));
       let min = (minutes % 60) > 9 ? (minutes % 60) : '0' + (minutes % 60);
       let time = hours + ':' + min;
       return time;
+    },
+
+    timeToString(hours, minutes, seconds) {
+      let hrs = (hours % 60) > 9 ? (hours % 60) : '0' + (hours % 60);
+      let min = (minutes % 60) > 9 ? (minutes % 60) : '0' + (minutes % 60);
+      let sec = (seconds % 60) > 9 ? (seconds % 60) : '0' + (seconds % 60);
+
+      return hrs + ':' + min + ':' + sec;
     }
   }
 }
