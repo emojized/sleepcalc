@@ -1,14 +1,10 @@
 <template>
   <div>
-    <nav
-      class="navbar header has-shadow is-info"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a
+    <b-navbar class="is-info">
+      <template #brand>
+        <NuxtLink
           class="navbar-item"
-          href="/"
+          to="/"
         >
           <img
             src="~assets/logo.svg"
@@ -18,14 +14,15 @@
           >
 
           <h1 class="title is-3 has-text-white">Sleepcalc.one</h1>
-        </a>
-      </div>
+        </NuxtLink>
+      </template>
+      <template #start>
+        <NuxtLink  to="/about"  class="navbar-item">
+          About
+        </NuxtLink>
+      </template>
 	  
-	  <NuxtLink  to="/about"  class="navbar-item has-text-white">
-        About
-      </NuxtLink>
-	  
-    </nav>
+    </b-navbar>
 
     <section class="main-content">
       <Nuxt />

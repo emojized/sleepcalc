@@ -5,20 +5,36 @@
     <time-input name="to-sleep" title="Time to fall asleep" v-model="toSleep"/>
     <p class="is-size-4 has-text-centered">You need to go to bed at {{ timeToSpleep }} to have {{ sleepCycles }} sleep cycles.</p>
     <clock-chart :currentTime="currentTime" :from="fromMinutes" :to="toMinutes" :toSleep="toSleepMinutes" />
-    <table class="table is-striped is-fullwidth">
-      <thead>
-        <tr>
-          <th>Go to bed</th>
-          <th>Sleep cycles</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="cycle in sleepCycleList" :key="cycle.time">
-          <td>{{cycle.time}}</td>
-          <td>{{cycle.cycles}}</td>
-        </tr>
-      </tbody>
-    </table>
+
+    <b-collapse
+      aria-id="contentIdForA11y2"
+      class="panel"
+      animation="slide">
+      <template #trigger>
+        <div
+          class="panel-heading"
+          role="button"
+          aria-controls="contentIdForA11y2">
+          <strong>Sleepcycle Table</strong>
+        </div>
+        </template>
+        <div class="panel-block">
+          <table class="table is-striped is-fullwidth">
+            <thead>
+              <tr>
+                <th>Go to bed</th>
+                <th>Sleep cycles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="cycle in sleepCycleList" :key="cycle.time">
+                <td>{{cycle.time}}</td>
+                <td>{{cycle.cycles}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </b-collapse>
   </section>
 </template>
 
