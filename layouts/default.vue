@@ -4,7 +4,7 @@
       <template #brand>
         <NuxtLink
           class="navbar-item"
-          to="/"
+          :to="localePath('/')"
         >
           <img
             src="~assets/logo.svg"
@@ -17,11 +17,17 @@
         </NuxtLink>
       </template>
       <template #start>
-        <NuxtLink  to="/about"  class="navbar-item">
-          About
+        <NuxtLink  :to="localePath('/about')"  class="navbar-item">
+          {{ $t('about') }}
         </NuxtLink>
       </template>
-	  
+
+      <template #end>
+        <b-navbar-dropdown :label="$t('choose_language')">
+          <NuxtLink :to="switchLocalePath('en')" class="navbar-item">{{$t('language.english')}}</NuxtLink>
+          <NuxtLink :to="switchLocalePath('de')" class="navbar-item">{{$t('language.german')}}</NuxtLink>
+        </b-navbar-dropdown>
+      </template> 
     </b-navbar>
 
     <section class="main-content">

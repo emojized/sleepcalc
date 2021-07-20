@@ -38,6 +38,29 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/buefy
     'nuxt-buefy',
+    ['nuxt-i18n', {
+      locales: [
+        {
+          name: 'Deutsch',
+          code: 'de',
+          iso: 'de-DE',
+          file: 'de-DE.js'
+        },
+        {
+          name: 'English',
+          code: 'en',
+          iso: 'en-US',
+          file: 'en-US.js'
+        },
+      ],
+      langDir: 'locals/',
+      defaultLocale: 'en',
+      detectBrowserLanguage: {
+        useCookie: true,
+        cookieKey: 'i18n_redirected',
+        onlyOnRoot: true,
+      }
+    }]
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

@@ -1,9 +1,9 @@
 <template>
   <section class="section">
-    <time-input name="wake-up" title="Wake up" v-model="time" />
-    <time-input name="current-time" title="Current time" v-model="now" :disabled="true"/>
-    <time-input name="to-sleep" title="Time to fall asleep" v-model="toSleep"/>
-    <p class="is-size-4 has-text-centered">You need to go to bed at {{ timeToSpleep }} to have {{ sleepCycles }} sleep cycles.</p>
+    <time-input name="wake-up" :title="$t('wake_up')" v-model="time" />
+    <time-input name="current-time" :title="$t('current_time')" v-model="now" :disabled="true"/>
+    <time-input name="to-sleep" :title="$t('time_to_fall_asleep')" v-model="toSleep"/>
+    <p class="is-size-4 has-text-centered">{{ $t('sleep_cycle_text', { time: timeToSpleep, amount: sleepCycles }) }}</p>
     <clock-chart :currentTime="currentTime" :from="fromMinutes" :to="toMinutes" :toSleep="toSleepMinutes" />
 
     <b-collapse
@@ -15,25 +15,25 @@
           class="panel-heading"
           role="button"
           aria-controls="contentIdForA11y2">
-          <strong>Sleepcycle Table</strong>
+          <strong>{{ $t('sleep_cycle_table') }}</strong>
         </div>
-        </template>
-        <div class="panel-block">
-          <table class="table is-striped is-fullwidth">
-            <thead>
-              <tr>
-                <th>Go to bed</th>
-                <th>Sleep cycles</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="cycle in sleepCycleList" :key="cycle.time">
-                <td>{{cycle.time}}</td>
-                <td>{{cycle.cycles}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      </template>
+      <div class="panel-block">
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>{{ $t('go_to_bed') }}</th>
+              <th>{{ $t('sleep_cycles') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="cycle in sleepCycleList" :key="cycle.time">
+              <td>{{cycle.time}}</td>
+              <td>{{cycle.cycles}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </b-collapse>
   </section>
 </template>
