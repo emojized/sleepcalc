@@ -1,10 +1,30 @@
 <template>
     <div>
-        <canvas ref="chart" width="500" height="500"></canvas>
+        <canvas ref="chart"></canvas>
     </div>
 </template>
 
 <script>
+class Timeframe {
+    constructor(near, far, angleFrom, angleTo, text) {
+        this.nead = near;
+        this.far = far;
+        this.angleFrom = angleFrom;
+        this.angleTo = angleTo;
+        this.text = text;
+    }
+
+    checkCollision(x, y) {
+        let angle = Math.atan(x, y);
+        if (angle < this.angleFrom || angle > tis.angleTo) return false;
+
+        let distance = Math.sqrt(x * x + y * y);
+        if (distance < this.near || distance > this.far) return false;
+
+        return true;
+    }
+}
+
 export default {
     props: {
         currentTime: {
@@ -28,6 +48,7 @@ export default {
     data () {
         return {
             clockRadius: 0.8,
+            timeframes: [],
         }
     },
 
@@ -40,12 +61,30 @@ export default {
         let size = chartElement.clientHeight / 2;
         this.size = size;
 
-        this.generate();
+        this.setup();
+
+        window.addEventListener('resize', (e) => {
+            this.setup();    
+        });
     },
 
     methods: {
+        setup: function () {
+            const chartElement = this.$refs['chart'];
+            const ctx = chartElement.getContext('2d');
+            // calculate the smaller side
+            let size = chartElement.clientHeight > chartElement.clientWidth ? chartElement.clientWidth : chartElement.clientHeight;
+            this.size = size / 2;
+
+            ctx.canvas.width  = chartElement.clientWidth;
+            ctx.canvas.height = chartElement.clientHeight;
+            this.ctx.translate(chartElement.clientWidth / 2, chartElement.clientHeight / 2);
+            
+            this.generate();  
+        },
+
         generate: function () {
-            let toSleepFrom = (this.from - this.toSleep) >= 0 ? (this.from - this.toSleep) : 26 * 60 - (this.from - this.toSleep);
+            let toSleepFrom = (this.from - this.toSleep) >= 0 ? (this.from - this.toSleep) : 24 * 60 + (this.from - this.toSleep);
             let toSleepTo = this.from;
             
             this.clearCanvas();
@@ -117,12 +156,13 @@ export default {
             let fromAngle = (2 * Math.PI) / (12 * 60) * fromTime - 0.5 * Math.PI;
             let toAngle = (2 * Math.PI) / (12 * 60) * toTime - 0.5 * Math.PI;
             this.drawArc(x, y, radius, fromAngle, toAngle, color);
+            this.timeframes.push(new Timeframe(radius - 8, radius, fromAngle, toAngle, "Test"));
         },
 
         drawOuterTimeframe: function (fromTime, toTime, color) {
             if (fromTime <= (12 * 60) && toTime <= (12 * 60) && fromTime < toTime) return;
-            let from = fromTime <= (12 * 60) ? 0 : fromTime - 12 * 60;
-            let to = toTime <= (12 * 60) ? 12 * 60 : toTime - 12 * 60;
+            let from = fromTime <= (12 * 60) ? 12 * 60 : fromTime - 12 * 60;
+            let to = toTime <= (12 * 60) ? 0 : toTime - 12 * 60;
             this.drawTimeframe(0, 0, this.size * .99, from, to, color);
         },
 
@@ -186,6 +226,6 @@ export default {
 <style scoped>
     canvas {
         height: 500px;
-        width: 500px;
+        width: 100%;
     }
 </style>

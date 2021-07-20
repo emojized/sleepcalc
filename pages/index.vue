@@ -28,7 +28,7 @@ export default {
   created() {
     setInterval(() => {
       var date = new Date();
-      this.now = this.minutesToTime(date.getHours() * 60 + date.getMinutes());
+      //this.now = this.minutesToTime(date.getHours() * 60 + date.getMinutes());
       this.currentTime = this.timeToString(date.getHours(), date.getMinutes(), date.getSeconds());
       this.minutesToSleep = this.getTimeDifference(this.startTime, this.time) % 90;
       this.sleepCycles = Math.floor(this.getTimeDifference(this.startTime, this.time) / 90);
@@ -47,7 +47,10 @@ export default {
     },
 
     fromMinutes: function () {
-      return this.timeToMinutes(this.timeToSpleep) + this.toSleepMinutes;
+      let time = this.timeToMinutes(this.timeToSpleep) + this.toSleepMinutes > 24 * 60 ? 
+        this.timeToMinutes(this.timeToSpleep) + this.toSleepMinutes - 24 * 60 : 
+        this.timeToMinutes(this.timeToSpleep) + this.toSleepMinutes;
+      return time;
     },
 
     toMinutes: function () {
@@ -56,7 +59,7 @@ export default {
 
     toSleepMinutes: function () {
       return this.timeToMinutes(this.toSleep);
-    }
+    },
   },
 
   methods: {
@@ -77,7 +80,8 @@ export default {
       return hours * 60 + minutes;
     },
 
-    minutesToTime(minutes, seconds) {
+    minutesToTime(minutes) {
+      if (minutes == 24 * 60) return '00:00';
       let hours = (Math.floor(minutes / 60)) > 9 ? (Math.floor(minutes / 60)) : '0' + (Math.floor(minutes / 60));
       let min = (minutes % 60) > 9 ? (minutes % 60) : '0' + (minutes % 60);
       let time = hours + ':' + min;
