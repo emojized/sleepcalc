@@ -63,9 +63,7 @@ export default {
 
         this.setup();
 
-        window.addEventListener('resize', (e) => {
-            this.setup();    
-        });
+        window.addEventListener('resize', this.setup);
     },
 
     methods: {
@@ -189,6 +187,10 @@ export default {
             ctx.lineWidth = width;
             ctx.stroke();
         },
+    },
+
+    beforeDestroy: function () {
+         window.removeEventListener('resize', this.setup);
     },
 
     watch: {

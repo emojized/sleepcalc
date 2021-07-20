@@ -39,9 +39,7 @@
 </template>
 
 <script>
-import SleepChart from '~/components/SleepChart.vue';
 export default {
-  components: { SleepChart },
   name: 'HomePage',
 
   data () {
