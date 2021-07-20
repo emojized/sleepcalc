@@ -20,6 +20,11 @@
           <h1 class="title is-3 has-text-white">Sleepcalc.one</h1>
         </a>
       </div>
+	  
+	  <NuxtLink  to="/about"  class="navbar-item">
+        About
+      </NuxtLink>
+	  
     </nav>
 
     <section class="main-content">
