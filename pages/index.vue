@@ -1,10 +1,24 @@
 <template>
   <section class="section">
     <time-input name="wake-up" title="Wake up" v-model="time" />
-    <time-input name="current-time" title="Current time" v-model="now"/>
+    <time-input name="current-time" title="Current time" v-model="now" :disabled="true"/>
     <time-input name="to-sleep" title="Time to fall asleep" v-model="toSleep"/>
     <p class="is-size-4 has-text-centered">You need to go to bed at {{ timeToSpleep }} to have {{ sleepCycles }} sleep cycles.</p>
     <clock-chart :currentTime="currentTime" :from="fromMinutes" :to="toMinutes" :toSleep="toSleepMinutes" />
+    <table class="table is-striped is-fullwidth">
+      <thead>
+        <tr>
+          <th>Go to bed</th>
+          <th>Sleep cycles</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="cycle in sleepCycleList" :key="cycle.time">
+          <td>{{cycle.time}}</td>
+          <td>{{cycle.cycles}}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
 
@@ -16,6 +30,7 @@ export default {
 
   data () {
     return {
+        sleepCycleLength: 90,
         time: "05:00",
         now: "00:00",
         currentTime: "00:00:00",
@@ -28,10 +43,10 @@ export default {
   created() {
     setInterval(() => {
       var date = new Date();
-      //this.now = this.minutesToTime(date.getHours() * 60 + date.getMinutes());
+      this.now = this.minutesToTime(date.getHours() * 60 + date.getMinutes());
       this.currentTime = this.timeToString(date.getHours(), date.getMinutes(), date.getSeconds());
-      this.minutesToSleep = this.getTimeDifference(this.startTime, this.time) % 90;
-      this.sleepCycles = Math.floor(this.getTimeDifference(this.startTime, this.time) / 90);
+      this.minutesToSleep = this.getTimeDifference(this.startTime, this.time) % this.sleepCycleLength;
+      this.sleepCycles = Math.floor(this.getTimeDifference(this.startTime, this.time) / this.sleepCycleLength);
     }, 1000)
   },
   
@@ -59,6 +74,15 @@ export default {
 
     toSleepMinutes: function () {
       return this.timeToMinutes(this.toSleep);
+    },
+
+    sleepCycleList: function () {
+      let cycles = [];
+      for (let i = 0; i < this.sleepCycles; i++) {
+        let time = this.timeToMinutes(this.timeToSpleep) + this.sleepCycleLength * i <= 24 * 60 ? this.timeToMinutes(this.timeToSpleep) + this.sleepCycleLength * i : this.timeToMinutes(this.timeToSpleep) + this.sleepCycleLength * i - 24 * 60;
+        cycles.push({'time': this.minutesToTime(time), 'cycles': this.sleepCycles - i});
+      }
+      return cycles;
     },
   },
 

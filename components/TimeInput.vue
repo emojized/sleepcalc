@@ -1,7 +1,7 @@
 <template>
     <div>
         <label :for="name">{{ title }}</label>
-        <input type="time" class="input" :id="name" :name="name" :value="value" @input="$emit('input', $event.target.value)">
+        <input type="time" class="input" :id="name" :name="name" :value="value" @input="$emit('input', $event.target.value)" :disabled="disabled">
     </div>
 </template>
 
@@ -18,6 +18,9 @@ export default {
         },
         value: {
             type: String,
+        },
+        disabled: {
+            type: Boolean,
         }
     }
 }
