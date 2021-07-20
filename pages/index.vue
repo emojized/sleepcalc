@@ -35,6 +35,24 @@
         </table>
       </div>
     </b-collapse>
+
+    <b-collapse
+      aria-id="contentIdForA11y2"
+      class="panel"
+      animation="slide">
+      <template #trigger>
+        <div
+          class="panel-heading"
+          role="button"
+          aria-controls="contentIdForA11y2">
+          <strong>{{ $t('sun_data') }}</strong>
+        </div>
+      </template>
+      <div class="panel-block level">
+        <p class="level-item">🌅<strong>{{ $t('sunrise') }}</strong>: {{sunrise}}</p>
+        <p class="level-item">🌇<strong>{{ $t('sunset') }}</strong>: {{sunset}}</p>
+      </div>
+    </b-collapse>
   </section>
 </template>
 
@@ -51,6 +69,11 @@ export default {
         toSleep: "00:30",
         minutesToSleep: null,
         sleepCycles: 0,
+        longitude: 0,
+        latitude: 0,
+        sunrise: "00:00",
+        sunset: "00:00",
+        locationData: false,
     }
   },
 
@@ -67,6 +90,7 @@ export default {
 
   mounted() {
     if (localStorage.time) this.time = localStorage.time;
+    this.getLocationData();
   },
   
   computed: {
@@ -106,6 +130,26 @@ export default {
   },
 
   methods: {
+    getLocationData() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.longitude = position.coords.longitude;
+          this.latitude = position.coords.latitude;
+          return this.$axios.get('https://api.sunrise-sunset.org/json?lat=' + this.latitude + '&lng=' + this.longitude).then(function success({data}) {
+            this.sunrise = this.convertTime(data.results.sunrise);
+            this.sunset = this.convertTime(data.results.sunset);
+            this.locationData = true;
+          }.bind(this));
+        });
+      }
+    },
+
+    convertTime(time) {
+      let minutes = this.timeToMinutes(time);
+      if (time.includes('PM')) minutes += 12 * 60;
+      return this.minutesToTime(minutes);
+    },
+
     getTimeDifference(time1, time2) {
       if (time1 == time2) return 24 * 60;
 

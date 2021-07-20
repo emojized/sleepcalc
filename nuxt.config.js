@@ -38,6 +38,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/buefy
     'nuxt-buefy',
+    '@nuxtjs/axios',
     ['nuxt-i18n', {
       locales: [
         {
