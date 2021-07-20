@@ -55,6 +55,7 @@ export default {
   },
 
   created() {
+    
     setInterval(() => {
       var date = new Date();
       this.now = this.minutesToTime(date.getHours() * 60 + date.getMinutes());
@@ -62,6 +63,10 @@ export default {
       this.minutesToSleep = this.getTimeDifference(this.startTime, this.time) % this.sleepCycleLength;
       this.sleepCycles = Math.floor(this.getTimeDifference(this.startTime, this.time) / this.sleepCycleLength);
     }, 1000)
+  },
+
+  mounted() {
+    if (localStorage.time) this.time = localStorage.time;
   },
   
   computed: {
@@ -133,6 +138,14 @@ export default {
 
       return hrs + ':' + min + ':' + sec;
     }
+  },
+
+  watch: {
+    time: {
+      handler: function (val) {
+        localStorage.time = val;
+      },
+    },
   }
 }
 </script>
