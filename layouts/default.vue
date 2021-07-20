@@ -21,7 +21,7 @@
         </a>
       </div>
 	  
-	  <NuxtLink  to="/about"  class="navbar-item">
+	  <NuxtLink  to="/about"  class="navbar-item has-text-white">
         About
       </NuxtLink>
 	  
