@@ -37,6 +37,7 @@
     </b-collapse>
 
     <b-collapse
+      v-if="locationData == true"
       aria-id="contentIdForA11y2"
       class="panel"
       animation="slide">
@@ -135,7 +136,7 @@ export default {
         navigator.geolocation.getCurrentPosition(position => {
           this.longitude = position.coords.longitude;
           this.latitude = position.coords.latitude;
-          return this.$axios.get('https://api.sunrise-sunset.org/json?lat=' + this.latitude + '&lng=' + this.longitude).then(function success({data}) {
+          return this.$axios.get('https://api.sunrise-sunset.org/json?lat=' + this.latitude + '&lng=' + this.longitude + '&date=today').then(function success({data}) {
             this.sunrise = this.convertTime(data.results.sunrise);
             this.sunset = this.convertTime(data.results.sunset);
             this.locationData = true;
@@ -145,7 +146,8 @@ export default {
     },
 
     convertTime(time) {
-      let minutes = this.timeToMinutes(time);
+      let offset = new Date().getTimezoneOffset();
+      let minutes = this.timeToMinutes(time) - offset;
       if (time.includes('PM')) minutes += 12 * 60;
       return this.minutesToTime(minutes);
     },
@@ -181,7 +183,7 @@ export default {
       let sec = (seconds % 60) > 9 ? (seconds % 60) : '0' + (seconds % 60);
 
       return hrs + ':' + min + ':' + sec;
-    }
+    },
   },
 
   watch: {
